@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block head_title %}
+Welcome to
+{% endblock %}
+
+{% block styles %}
+  .jumbotron{
+    <!-- color: red; -->
+  }
+{% endblock %}
+
+{% block jquery %}
+<!-- alert("Welcome!"); -->
+{% endblock %}
+
+{# Comments here #}
+
+{% block jumbotron2 %}
+<!-- Main component for a primary marketing message or call to action -->
+<div class="container">
+<div class="jumbotron">
+  <h1>Hello {{ username_is }}</h1>
+  <p>This example is a quick exercise to illustrate how the default, static and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>
+  <p>To see the difference between static and fixed top navbars, just scroll.</p>
+  <p>
+    <a class="btn btn-lg btn-primary" href="../../components/#navbar" role="button">View navbar docs &raquo;</a>
+  </p>
+</div>
+</div>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="row">
+  
+    {% for restaurant in restaurants %}
+        <div class="col-sm-4">
+          <div class="thumbnail">
+  
+          {% for item in restaurant.restaurantimage_set.all %}
+          
+          
+          <a href="{{ restaurant.get_absolute_url }}">  
+              <img class="img-responsive" src="{{ MEDIA_URL }} {{ item.image.url }}"/>
+          </a>
+              <!-- {% if item.featured %} -->
+            <!-- {% endif %} -->
+          {% endfor %}
+          <div class="caption">
+          <a href="{{ restaurant.get_absolute_url }}"><h3>{{ restaurant.name }}</h3></a>
+            <p>{{ restaurant.description|truncatewords:15}}</p>
+            <p><a href="{{ restaurant.get_absolute_url }}" class="btn btn-primary" role="button">View</a><a href="#" class="btn btn-default" role="button">Button</a></p>
+          </div>
+        </div>
+          
+
+        </div>
+
+  {% cycle "" "" "</div><br><hr><div class='row'>" %}
+
+  {% endfor %}
+
+</div>
+{% endblock %}

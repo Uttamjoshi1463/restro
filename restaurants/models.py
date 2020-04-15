@@ -1,48 +1,58 @@
 from django.db import models
 from django.urls import reverse
-from restaurants.models import Restaurant, Food
-from django.contrib.auth.models import User
-
 
 
 # Create your models here.
 
-class CartItem(models.Model):
-    cart = models.ForeignKey("Cart", on_delete=models.CASCADE)
-    food = models.ForeignKey(Food, on_delete=models.CASCADE, default=0)
-    quantity = models.IntegerField(default=0)
-    line_total = models.DecimalField(default=10.99, max_digits=1000, decimal_places=2)
+class Restaurant(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    pan_number = models.CharField(max_length=50)
+    email = models.EmailField()
+    longitude = models.DecimalField(max_digits=9, decimal_places=6)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6)
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
+    slug = models.SlugField(unique=True)
+    active = models.BooleanField(default=True)
 
     def __unicode__(self):
-        try:
-            return str(self.cart.id)
-        except:
-            return self.food.name
+        return str(self.name)
 
     def __str__(self):
-        try:
-            return str(self.cart.id)
-        except:
-            return self.food.name
+        return self.name
 
-    def augment_quantity(self, quantity):
-        self.quantity = self.quantity + int(quantity)
-        self.save()
+    class Meta:
+        unique_together = ('name', 'slug')
+
+    def get_absolute_url(self):
+        return reverse("single_restaurant", kwargs={"slug":self.slug})
+
+class RestaurantImage(models.Model):
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, null=False, blank=False)
+    image = models.ImageField(upload_to='restaurants/images/')
 
 
-class Cart(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    total = models.DecimalField(max_digits=100, decimal_places=2, default=0.00)
+
+class Contact(models.Model):
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, null=False, blank=False)
+    phone_num = models.CharField(max_length=15, null=True, blank=False)
+
+
+
+
+class Food(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, null=False, blank=False)
+    image = models.ImageField(upload_to='foods/images/')
+    price = models.IntegerField()
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
     active = models.BooleanField(default=True)
 
 
-    # def __unicode__(self):
-    #     return "Cart id: %s" %(self.id)
-
 
     def __str__(self):
-        return "Cart id: %s" %(self.id)
+        return str(self.name) + "@" + self.restaurant.name
+

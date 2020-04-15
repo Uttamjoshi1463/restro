@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div class="row">
+  
+    {% for restaurant in restaurants %}
+        <div class="col-sm-4">
+          <div class="thumbnail">
+  
+          {% for item in restaurant.restaurantimage_set.all %}
+          
+          
+            
+              <img class="img-responsive"src="{{ MEDIA_URL }} {{ item.image.url }}"/>
+              <!-- {% if item.featured %} -->
+            <!-- {% endif %} -->
+          {% endfor %}
+          <div class="caption">
+          <a href="{{ restaurant.get_absolute_url }}"><h3>{{ restaurant.name }}</h3></a>
+            <p>{{ restaurant.description}}</p>
+            <p><a href="{{ restaurant.get_absolute_url }}" class="btn btn-primary" role="button">View</a><a href="#" class="btn btn-default" role="button">Button</a></p>
+          </div>
+        </div>
+          
+
+        </div>
+
+  {% cycle "" "" "</div><br><hr><div class='row'>" %}
+
+  {% endfor %}
+
+</div>
+{% endblock %}
