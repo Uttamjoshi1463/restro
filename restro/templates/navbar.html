@@ -20,7 +20,7 @@
             <ul class="nav navbar-nav navbar-right">
               <li class=""><a href="{% url 'restaurants' %}">Restaurants</a></li>
               <li class=""><a href="#">Foods</a></li>
-              <li><a href="#">Cart <span class="badge">{% if not request.session.items_total %} 0 {% else %} {{ request.session.items_total }} {% endif %}</span></a></li>
+              <li><a href="{% url 'cart' %}">Cart <span class="badge">{% if not request.session.items_total %} 0 {% else %} {{ request.session.items_total }} {% endif %}</span></a></li>
               {% if request.user.is_authenticated %}
               <li class=""><a href="#">Account</a></li>
               <li class=""><a href="#">Logout</a></li>

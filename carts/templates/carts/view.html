@@ -13,8 +13,8 @@
 <table class="table">
     <thead>
         <th>Item</th>
-        <th>Price</th>
         <th>Qty</th>
+        <th>Price</th>
     </thead>
     <tfoot>
         <tr>
@@ -26,8 +26,8 @@
     {% for item in cart.cartitem_set.all %}
     <tr>
         <td>{{ item.food }}</td>
-        <td>{{ item.food.price }}</td>
         <td>{{ item.quantity }}</td>
+        <td>{{ item.food.price }}</td>
         <td><a href="{% url 'remove_from_cart' item.id %}">Remove</a></td>
     </tr>
     {% endfor %}
