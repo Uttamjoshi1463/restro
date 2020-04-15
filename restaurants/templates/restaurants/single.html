@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div class="row">
+    <div class="col-sm-4">
+
+        {% for img in images %}
+        <div class="col-xs-12">
+            <img src="{{MEDIA_URL}}{{ img.image.url }}" class='img-thumbnail' alt="">
+            
+            <hr>
+        </div>
+        {% endfor %}
+        <h1>{{ restaurant.name }}</h1>
+        <h4>{{ restaurant.description }}</h4>
+        <hr>
+        
+                           
+        <h1>Menu</h1>
+        <div class="col-xs-6">
+            {% for food in foods %}
+                <a href="#" class="thumbnail">
+                    <img class='img-responsive' src="{{ MEDIA_URL }}{{ food.image.url }}" />
+                    <h4>{{item.name}}</h4>
+                </a>
+            
+            <form class="form pull-right" method="POST" action="{% url 'add_to_cart' food.id %}">
+                {% csrf_token %}
+                <input type="number" name="quantity" value="1">   
+                <input class="btn btn-default"  type="submit" value="Add to menu">
+            </form>
+           
+            Price: {{ food.price }} <br>
+            {{ food.description|linebreaks}}
+          
+            <br>
+            <br>
+            
+            {% endfor %}
+        
+        </div>
+        
+        
+
+    </div>
+    
+</div>
+{% endblock %}
